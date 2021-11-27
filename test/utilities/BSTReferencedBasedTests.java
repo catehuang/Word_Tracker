@@ -1,0 +1,193 @@
+package utilities;
+
+import static org.junit.Assert.*;
+import static org.junit.Assume.assumeTrue;
+
+import org.junit.*;
+
+import exceptions.TreeException;
+
+public class BSTReferencedBasedTests
+{
+	private BSTReferencedBased bst;
+	
+	@Before
+	public void setUp() throws Exception 
+	{
+		this.bst = new BSTReferencedBased();
+		bst.add("Calgary");
+		bst.add("Vancouver");
+		bst.add("Toronto");
+		bst.add("Quebec");
+		bst.add("Burnaby");
+	}
+
+	@After
+	public void tearDown() throws Exception 
+	{
+		this.bst = null;
+	}
+	
+	@Test
+	public void testGetRoot()
+	{
+		try 
+		{
+			assertEquals("Calgary", bst.getRoot().getNode());
+		} 
+		catch (TreeException e)
+		{
+			assertFalse(false);
+			e.printStackTrace();
+		}
+		
+		bst.clear();
+		
+		try 
+		{
+			bst.getRoot().getNode();
+			assertFalse(false);
+		} 
+		catch (TreeException e)
+		{
+			assumeTrue(true);
+		}	
+		
+	}
+	
+	@Test
+	public void testGetHeight()
+	{
+		assertEquals(4, bst.getHeight());
+		bst.clear();
+		assertEquals(0, bst.getHeight());
+		bst.add("New York");
+		assertEquals(1, bst.getHeight());
+		bst.add("Washington");
+		assertEquals(2, bst.getHeight());
+	}
+	
+	@Test
+	public void testSize()
+	{
+		assertEquals(5, bst.size());
+	}
+	
+	@Test
+	public void testIsEmpty()
+	{
+		assertFalse(bst.isEmpty());
+		bst.clear();
+		assertTrue(bst.isEmpty());
+	}
+	
+	@Test
+	public void testClear()
+	{
+		bst.clear();
+		assertEquals(0, bst.size());
+		assertEquals(0, bst.getHeight());
+		
+		try 
+		{
+			assertNull(bst.getRoot());
+		} 
+		catch (TreeException e) 
+		{
+			assertTrue(true);
+		}
+	}
+	
+	@Test
+	public void testContains()
+	{
+		try 
+		{
+			assertTrue(bst.contains("Calgary"));
+			assertTrue(bst.contains("Quebec"));
+			assertTrue(bst.contains("Burnaby"));
+			assertTrue(bst.contains("Vancouver"));
+			assertTrue(bst.contains("Toronto"));
+		} 
+		catch (TreeException e) 
+		{
+			assertFalse(false);
+			e.printStackTrace();
+		}
+		
+		try 
+		{
+			assertFalse(bst.contains("New York"));
+		} 
+		catch (TreeException e) 
+		{
+			assertFalse(false);
+		}
+	}
+	
+	@Test
+	public void testSearch()
+	{
+		try 
+		{
+			assertEquals(bst.getRoot().getRight(), bst.search("Vancouver"));
+			assertEquals(bst.getRoot().getRight().getLeft(), bst.search("Toronto"));
+			assertEquals(bst.getRoot().getLeft(), bst.search("Burnaby"));
+		} 
+		catch (TreeException e) 
+		{
+			assertFalse(false);
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testAdd()
+	{
+		// abcdefghijklmnopqrstuvwxyz
+		bst.add("Winnipeg");
+		bst.add("Saskatoon");
+		bst.add("Abbotsford");
+			
+		try 
+		{
+			assertEquals(bst.getRoot().getLeft().getLeft().getNode(), bst.search("Abbotsford").getNode());
+			assertEquals(bst.getRoot().getRight().getLeft().getLeft().getNode(), bst.search("Quebec").getNode());
+			assertEquals(bst.getRoot().getRight().getRight().getNode(), bst.search("Winnipeg").getNode());
+		} 
+		catch (TreeException e) 
+		{
+			assertFalse(false);
+			e.printStackTrace();
+		}
+		
+		try {
+			bst.add(null);
+			bst.add("Winnipeg");
+			assertFalse(false);
+		}
+		catch (NullPointerException e) 
+		{
+			assertTrue(true);
+		}
+	}
+	
+	@Test
+	public void testInorderIterator()
+	{
+		
+	}
+	
+	@Test
+	public void testPreorderIterator()
+	{
+		
+	}
+	
+	@Test
+	public void testPostorderIterator()
+	{
+		
+	}
+	
+}
