@@ -217,18 +217,14 @@ public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTr
 	}
 
 	//inner class InorderIterator
-	private class InorderIterator implements Iterator<E>{ 
+	private class InorderIterator<E> implements Iterator<E>{ 
 		private ArrayList<E> list = new ArrayList<>(); //the list to store the element
 		private int current = 0; //the current element/position in the list
 		
 		public InorderIterator() {
-			inorder();
+			inorder((BSTreeNode<E>) root);	//traversal from the root
 		}
-		
-		//inorder traversal from the root
-		private void inorder() {
-			inorder(root);
-		}
+
 		
 		//inorder traversal from a subtree
 		private void inorder(BSTreeNode<E> root) {
@@ -254,7 +250,39 @@ public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTr
 
 	@Override
 	public Iterator<E> preorderIterator() {
-		return null;
+		return new PreorderIterator();
+	}
+
+	//inner class PreorderIterator
+	private class PreorderIterator<E> implements Iterator<E>{ 
+		private ArrayList<E> list = new ArrayList<>(); //the list to store the element
+		private int current = 0; //the current element/position in the list
+		
+		public PreorderIterator() {
+			preorder((BSTreeNode<E>) root);
+		}
+
+		
+		//Preorder traversal from a subtree
+		private void preorder(BSTreeNode<E> root) {
+			if(root == null) return;	
+			list.add(root.getNode()); //V
+			preorder(root.getLeft()); //L
+			preorder(root.getRight()); //R
+		}
+		
+		@Override
+		public boolean hasNext() {
+			if(current < list.size())
+				return true;
+			return false;
+		}
+		
+		@Override
+		public E next() {
+			return list.get(current++); //get the current element and move to the next
+		}
+
 	}
 
 	@Override
