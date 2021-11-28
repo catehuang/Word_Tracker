@@ -150,7 +150,7 @@ public class BSTReferencedBasedTests<E> {
 			o[i] = bstinorderIterator.next();
 			i++;
 		}
-		
+
 		assertEquals("Burnaby", o[0]);
 		assertEquals("Calgary", o[1]);
 		assertEquals("Quebec", o[2]);
@@ -168,7 +168,7 @@ public class BSTReferencedBasedTests<E> {
 			o[i] = bstpreorderIterator.next();
 			i++;
 		}
-		
+
 		assertEquals("Calgary", o[0]);
 		assertEquals("Burnaby", o[1]);
 		assertEquals("Vancouver", o[2]);
@@ -178,7 +178,20 @@ public class BSTReferencedBasedTests<E> {
 
 	@Test
 	public void testPostorderIterator() {
+		Object[] o = new Object[bst.size()];
+		Iterator<E> bstpostrderIterator = bst.postorderIterator();
 
+		int i = 0;
+		while (bstpostrderIterator.hasNext()) {
+			o[i] = bstpostrderIterator.next();
+			i++;
+		}
+
+		assertEquals("Burnaby", o[0]);
+		assertEquals("Quebec", o[1]);
+		assertEquals("Toronto", o[2]);
+		assertEquals("Vancouver", o[3]);
+		assertEquals("Calgary", o[4]);
 	}
 
 }

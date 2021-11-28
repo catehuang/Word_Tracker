@@ -6,87 +6,70 @@ import java.util.Stack;
 
 import exceptions.TreeException;
 
-public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTreeADT<E> 
-{
+public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	private BSTreeNode<E> root;
 	int counter = 0;
 
-	public BSTReferencedBased() 
-	{
+	public BSTReferencedBased() {
 		this.root = null;
 	}
 
-	public BSTReferencedBased(E node) 
-	{
+	public BSTReferencedBased(E node) {
 		this.root = new BSTreeNode(node);
 	}
 
 	@Override
-	public BSTreeNode<E> getRoot() throws TreeException 
-	{
+	public BSTreeNode<E> getRoot() throws TreeException {
 
-		if (this.root == null)
-		{
+		if (this.root == null) {
 			throw new TreeException("The Binary Search Tree is empty");
-		}
-		else
-		{
+		} else {
 			return root;
 		}
 	}
-	
+
 	@Override
-	public int getHeight() 
-	{
+	public int getHeight() {
 		return calHeight(root);
 	}
-	
+
 	public int calHeight(BSTreeNode<E> node) // number of level with nodes
 	{
-		if (node == null)
-		{
+		if (node == null) {
 			return 0; // ppt said the height is 0 for empty tree
 		}
 
-        int lefth = calHeight(node.getLeft());
-        
-        int righth = calHeight(node.getRight());
+		int lefth = calHeight(node.getLeft());
 
-        if (lefth > righth )
-        {
-            return (lefth + 1);
-        }    
-        else
-        {
-            return (righth + 1);
-        }
+		int righth = calHeight(node.getRight());
+
+		if (lefth > righth) {
+			return (lefth + 1);
+		} else {
+			return (righth + 1);
+		}
 	}
 
 	@Override
-	public int size() 
-	{
+	public int size() {
 		return calSize(root);
 	}
-	
-	public int calSize(BSTreeNode<E> node)
-	{
-		if (node == null)
-		{
+
+	public int calSize(BSTreeNode<E> node) {
+		if (node == null) {
 			return 0;
 		}
-		
+
 		counter++;
 		calSize(node.getRight());
 		calSize(node.getLeft());
 
 		return counter;
 	}
-	
+
 	@Override
-	public boolean isEmpty() 
-	{
-		if (this.root == null)
-		{
+	public boolean isEmpty() {
+		if (this.root == null) {
 			return true;
 		}
 
@@ -94,80 +77,61 @@ public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTr
 	}
 
 	@Override
-	public void clear() 
-	{
+	public void clear() {
 		this.root = null;
 	}
 
 	@Override
-	public boolean contains(E entry) throws TreeException 
-	{		
-		if (search(entry) == null)
-		{
+	public boolean contains(E entry) throws TreeException {
+		if (search(entry) == null) {
 			return false;
-		}
-		else
-		{
+		} else {
 			return true;
 		}
 	}
 
 	@Override
-	public BSTreeNode<E> search(E entry) throws TreeException 
-	{
-		if (isEmpty())
-		{
+	public BSTreeNode<E> search(E entry) throws TreeException {
+		if (isEmpty()) {
 			throw new TreeException("The Binary Search Tree is empty");
 		}
-		
-		if (getRoot().getNode() == entry)
-		{
+
+		if (getRoot().getNode() == entry) {
 			return this.root;
 		}
-		
+
 		BSTreeNode<E> prev = null;
 		BSTreeNode<E> tmp = root;
-		
-		while (tmp != null)
-		{
-			if (entry.compareTo(tmp.getNode()) == 0)
-			{
+
+		while (tmp != null) {
+			if (entry.compareTo(tmp.getNode()) == 0) {
 				return tmp;
-			}
-			else if (entry.compareTo(tmp.getNode()) > 0)
-			{
+			} else if (entry.compareTo(tmp.getNode()) > 0) {
 				prev = tmp;
 				tmp = tmp.getRight();
-			}
-			else
-			{
+			} else {
 				prev = tmp;
 				tmp = tmp.getLeft();
 			}
 		}
-		
-		if (entry.compareTo(prev.getNode()) == 0)
-		{
+
+		if (entry.compareTo(prev.getNode()) == 0) {
 			return prev;
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
 
 	@Override
 	public boolean add(E newEntry) throws NullPointerException {
-		
-		if (newEntry == null)
-		{
+
+		if (newEntry == null) {
 			throw new NullPointerException();
 		}
-		
+
 		BSTreeNode<E> newNode = new BSTreeNode<E>(newEntry);
-		
-		if (root == null) 
-		{
+
+		if (root == null) {
 			root = newNode;
 			return true;
 		}
@@ -175,75 +139,66 @@ public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTr
 		// traversing to find a place
 		BSTreeNode<E> prev = null;
 		BSTreeNode<E> tmp = root;
-		
-		while (tmp != null)
-		{
-			if (newNode.getNode().compareTo(root.getNode()) == 0)
-			{
+
+		while (tmp != null) {
+			if (newNode.getNode().compareTo(root.getNode()) == 0) {
 				return false; // BST doesn't allow duplicates
-			} 
-			else if (newNode.getNode().compareTo(tmp.getNode()) > 0) // node > root
+			} else if (newNode.getNode().compareTo(tmp.getNode()) > 0) // node > root
 			{
 				prev = tmp;
 				tmp = tmp.getRight();
-			}
-			else // node < root
+			} else // node < root
 			{
 				prev = tmp;
 				tmp = tmp.getLeft();
 			}
 		}
-		
-		if (newNode.getNode().compareTo(prev.getNode()) > 0)
-		{
+
+		if (newNode.getNode().compareTo(prev.getNode()) > 0) {
 			prev.setRight(newNode);
 			return true;
-		}
-		else if (newNode.getNode().compareTo(prev.getNode()) < 0)
-		{
+		} else if (newNode.getNode().compareTo(prev.getNode()) < 0) {
 			prev.setLeft(newNode);
 			return true;
-		}
-		else
-		{
+		} else {
 			return false; // BST doesn't allow duplicates
 		}
 	}
 
 	@Override
 	public Iterator<E> inorderIterator() {
-		
+
 		return new InorderIterator();
 	}
 
-	//inner class InorderIterator
-	private class InorderIterator<E> implements Iterator<E>{ 
-		private ArrayList<E> list = new ArrayList<>(); //the list to store the element
-		private int current = 0; //the current element/position in the list
-		
+	// inner class InorderIterator
+	private class InorderIterator<E> implements Iterator<E> {
+		private ArrayList<E> list = new ArrayList<>(); // the list to store the element
+		private int current = 0; // the current element/position in the list
+
 		public InorderIterator() {
-			inorder((BSTreeNode<E>) root);	//traversal from the root
+			inorder((BSTreeNode<E>) root); // traversal from the root
 		}
 
-		
-		//inorder traversal from a subtree
+		// inorder traversal from a subtree
 		private void inorder(BSTreeNode<E> root) {
-			if(root == null) return;
-			inorder(root.getLeft()); //L
-			list.add(root.getNode()); //V
-			inorder(root.getRight()); //R
+			if (root == null)
+				return;
+			inorder(root.getLeft()); // L
+			list.add(root.getNode()); // V
+			inorder(root.getRight()); // R
 		}
-		
+
 		@Override
 		public boolean hasNext() {
-			if(current < list.size())
+			if (current < list.size())
 				return true;
 			return false;
 		}
-		
+
 		@Override
 		public E next() {
-			return list.get(current++); //get the current element and move to the next
+			return list.get(current++); // get the current element and move to the next
 		}
 
 	}
@@ -253,42 +208,73 @@ public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTr
 		return new PreorderIterator();
 	}
 
-	//inner class PreorderIterator
-	private class PreorderIterator<E> implements Iterator<E>{ 
-		private ArrayList<E> list = new ArrayList<>(); //the list to store the element
-		private int current = 0; //the current element/position in the list
-		
+	// inner class PreorderIterator
+	private class PreorderIterator<E> implements Iterator<E> {
+		private ArrayList<E> list = new ArrayList<>(); // the list to store the element
+		private int current = 0; // the current element/position in the list
+
 		public PreorderIterator() {
 			preorder((BSTreeNode<E>) root);
 		}
 
-		
-		//Preorder traversal from a subtree
+		// Preorder traversal from a subtree
 		private void preorder(BSTreeNode<E> root) {
-			if(root == null) return;	
-			list.add(root.getNode()); //V
-			preorder(root.getLeft()); //L
-			preorder(root.getRight()); //R
+			if (root == null)
+				return;
+			list.add(root.getNode()); // V
+			preorder(root.getLeft()); // L
+			preorder(root.getRight()); // R
 		}
-		
+
 		@Override
 		public boolean hasNext() {
-			if(current < list.size())
+			if (current < list.size())
 				return true;
 			return false;
 		}
-		
+
 		@Override
 		public E next() {
-			return list.get(current++); //get the current element and move to the next
+			return list.get(current++); // get the current element and move to the next
 		}
 
 	}
 
 	@Override
 	public Iterator<E> postorderIterator() {
-		
-		return null;
+
+		return new PostorderIterator();
+	}
+
+	// inner class PostorderIterator
+	private class PostorderIterator<E> implements Iterator<E> {
+		private ArrayList<E> list = new ArrayList<>(); // the list to store the element
+		private int current = 0; // the current element/position in the list
+
+		public PostorderIterator() {
+			postorder((BSTreeNode<E>) root);
+		}
+
+		// Preorder traversal from a subtree
+		private void postorder(BSTreeNode<E> root) {
+			if (root == null) return;
+			postorder(root.getLeft()); // L
+			postorder(root.getRight()); // R
+			list.add(root.getNode()); // V
+		}
+
+		@Override
+		public boolean hasNext() {
+			if (current < list.size())
+				return true;
+			return false;
+		}
+
+		@Override
+		public E next() {
+			return list.get(current++); // get the current element and move to the next
+		}
+
 	}
 
 }
