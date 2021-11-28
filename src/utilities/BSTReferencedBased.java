@@ -1,5 +1,7 @@
 package utilities;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Stack;
 
 import exceptions.TreeException;
@@ -211,12 +213,48 @@ public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTr
 	@Override
 	public Iterator<E> inorderIterator() {
 		
-		return null;
+		return new InorderIterator();
+	}
+
+	//inner class InorderIterator
+	private class InorderIterator implements Iterator<E>{ 
+		private ArrayList<E> list = new ArrayList<>(); //the list to store the element
+		private int current = 0; //the current element/position in the list
+		
+		public InorderIterator() {
+			inorder();
+		}
+		
+		//inorder traversal from the root
+		private void inorder() {
+			inorder(root);
+		}
+		
+		//inorder traversal from a subtree
+		private void inorder(BSTreeNode<E> root) {
+			if(root == null) return;
+			inorder(root.getLeft()); //L
+			list.add(root.getNode()); //V
+			inorder(root.getRight()); //R
+		}
+		
+		@Override
+		public boolean hasNext() {
+			if(current < list.size())
+				return true;
+			return false;
+		}
+		
+		@Override
+		public E next() {
+			return list.get(current++); //get the current element and move to the next
+		}
+
 	}
 
 	@Override
 	public Iterator<E> preorderIterator() {
-
+		return null;
 	}
 
 	@Override

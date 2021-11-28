@@ -4,6 +4,7 @@
 package utilities;
 
 import java.io.*;
+import java.util.Iterator;
 
 import exceptions.TreeException;
 
