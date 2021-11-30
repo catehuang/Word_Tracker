@@ -141,13 +141,17 @@ public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTr
 		BSTreeNode<E> tmp = root;
 
 		while (tmp != null) {
+			/* BST doesn't allow duplicates
 			if (newNode.getNode().compareTo(root.getNode()) == 0) {
-				return false; // BST doesn't allow duplicates
-			} else if (newNode.getNode().compareTo(tmp.getNode()) > 0) // node > root
+				return false; 
+			} 
+			*/
+			if (newNode.getNode().compareTo(tmp.getNode()) > 0) // node > root
 			{
 				prev = tmp;
 				tmp = tmp.getRight();
-			} else // node < root
+			} 
+			else // node < root
 			{
 				prev = tmp;
 				tmp = tmp.getLeft();

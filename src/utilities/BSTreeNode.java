@@ -5,7 +5,7 @@ public class BSTreeNode <E>
 
 	private BSTreeNode<E> left;
 	private BSTreeNode<E> right;
-	private E node;
+	private E node; 
 
 	public BSTreeNode() 
 	{

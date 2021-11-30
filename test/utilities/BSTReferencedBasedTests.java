@@ -193,5 +193,4 @@ public class BSTReferencedBasedTests<E> {
 		assertEquals("Vancouver", o[3]);
 		assertEquals("Calgary", o[4]);
 	}
-
 }

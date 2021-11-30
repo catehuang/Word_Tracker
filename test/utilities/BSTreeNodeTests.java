@@ -1,5 +1,8 @@
 package utilities;
 import static org.junit.Assert.*;
+
+import java.util.HashMap;
+
 import org.junit.*;
 
 
@@ -61,5 +64,4 @@ public class BSTreeNodeTests<E>
 		bst.setRight(new BSTreeNode("Quebec"));
 		assertEquals("Quebec", bst.getRight().getNode());
 	}
-
 }
