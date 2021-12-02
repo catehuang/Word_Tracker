@@ -1,12 +1,13 @@
 package utilities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
 import exceptions.TreeException;
 
-public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTreeADT<E> {
+public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTreeADT<E>, Serializable {
 	private BSTreeNode<E> root;
 	int counter = 0;
 

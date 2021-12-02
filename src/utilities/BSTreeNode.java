@@ -1,6 +1,8 @@
 package utilities;
 
-public class BSTreeNode <E>
+import java.io.Serializable;
+
+public class BSTreeNode <E> implements Serializable
 {
 
 	private BSTreeNode<E> left;
