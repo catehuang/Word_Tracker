@@ -56,7 +56,8 @@ public class Driver {
 	}
 
 	private static void message() {
-		System.out.println("Usage: java -jar Tracker.jar ");
+		System.out.printf("\tjava -jar Tracker.jar [-pf/pl/po] [-f report.txt]\n");
+		System.out.printf("\t[] means optional");
 		System.out.println("Mutually exclusive options (default is po):");
 		System.out.printf(
 				"\t-pf to print in alphabetic order all words along with the corresponding list of files in which the words occur\n");
@@ -66,8 +67,5 @@ public class Driver {
 				"\t-po to print in alphabetic order all words along with the corresponding list of files, numbers of the lines in which the word occur and the frequency of occurrence of the words.\n");
 		System.out.println("Other options:");
 		System.out.printf("\t-f filename to redirect the report in the previous step to a specified file\n");
-		System.out.println("Example:");
-		System.out.printf("\tjava -jar Tracker.jar [-pf/pl/po] [-f report.txt]\n");
-		System.out.printf("\t[] means optional");
 	}
 }
