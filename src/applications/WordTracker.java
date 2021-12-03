@@ -18,7 +18,7 @@ public class WordTracker<E> {
 	String binary_file = "res/repository.ser"; 
 	BSTReferencedBased bst = new BSTReferencedBased();
 
-	public WordTracker(String input_file) throws FileNotFoundException, TreeException, ClassNotFoundException {
+	public WordTracker(String input_file, String report_file, String option) throws FileNotFoundException, TreeException, ClassNotFoundException {
 		super();
 		
 		File file = new File(binary_file);
@@ -26,11 +26,37 @@ public class WordTracker<E> {
 		{
 			deserializeBSTreeFromFile(binary_file);
 		}
-		else
-		{
-			wordTracker(input_file);
-			serializeBSTreeToFile(binary_file);
-		}
+
+		wordTracker(input_file);
+		//serializeBSTreeToFile(binary_file); ERROR
+		
+		BSTreeNode<E> node;
+		for (Iterator<E> it = bst.inorderIterator(); it.hasNext();) {
+			String word = (String) it.next();
+			node = bst.search(word);
+			String value = node.getValue();
+			
+			if (option.equals("pf")) {
+				System.out.println(word.toUpperCase());
+				System.out.println("-".repeat(20));
+				System.out.println(value.substring(0, value.indexOf(',')) + "\n");
+			}
+			else if (option.equals("pl"))
+			{
+				System.out.println(word.toUpperCase());
+				System.out.println("-".repeat(20));
+				System.out.println(value.substring(0, value.indexOf(',')));
+				System.out.println("- at lines [" + value.substring(value.indexOf(',') + 1) + "]\n");
+			}
+			else // option.equals("po")
+			{
+				int occurrence = value.substring(value.indexOf(',') + 1).split(",").length;
+				System.out.println(word.toUpperCase() + " (" + occurrence + " occurrences)");
+				System.out.println("-".repeat(20));
+				System.out.println(value.substring(0, value.indexOf(',')));
+				System.out.println("- at lines [" + value.substring(value.indexOf(',') + 1) + "]\n");
+			}
+		}	
 	}
 
 	/**
@@ -51,7 +77,7 @@ public class WordTracker<E> {
 			
 			line_number++;
 			
-			String[] words = line.replaceAll("[^a-zA-Z \']", "").split(" ");
+			String[] words = line.replaceAll("[^a-zA-Z ]", "").split(" ");
 			
 			for (String word : words)
 			{
@@ -89,7 +115,6 @@ public class WordTracker<E> {
 		}
 		
 		/*
-		
 		BSTreeNode<E> node;
 		for (Iterator<E> it = bst.inorderIterator(); it.hasNext();) {
 			String word = (String) it.next();
@@ -97,45 +122,9 @@ public class WordTracker<E> {
 			String value = node.getValue();
 		    System.out.println(word + ", " + value);
 		}	
-		
-		/* Use HashMap
-		int line_number = 0;
-		
-		BSTReferencedBased bst = new BSTReferencedBased();
-		
-		HashMap<String, String> h = new HashMap<>();
-		
-		Scanner in = new Scanner(new File(input_file));
-		
-		while (in.hasNextLine())
-		{
-			String line = in.nextLine();
-			
-			line_number++;
-			
-			String[] words = line.replaceAll("[^a-zA-Z \']", "").split(" ");
-			
-			for (String word : words)
-			{
-				word = word.toLowerCase();
-				
-				if (bst.isEmpty() || bst.search(word) == null)
-				{
-					bst.add(word);
-					h.put(word, input_file + "," + line_number);
-				}
-				else
-				{
-					h.replace(word, h.get(word) + "," + line_number);
-				}
-			}
-		}
-		
-		for (String i : h.keySet())
-		{
-			System.out.println(i + " : " + h.get(i));
-		}
+		System.exit(0);
 		*/
+		
 	}
 	
 	/**
@@ -182,8 +171,20 @@ public class WordTracker<E> {
 				while ((ois.readObject()) != null)
 				{
 					node = (BSTreeNode) ois.readObject();
-					System.out.println(node.getNode() + ", " + node.getValue());
+					String word = (String)node.getNode();
+					bst.add(word);
 					
+					try 
+					{
+						bst.search(word).setValue(node.getValue());
+					} 
+					catch 
+					(TreeException e) 
+					{
+						e.printStackTrace();
+					}
+					
+					System.out.println(node.getNode() + ", " + node.getValue());					
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
