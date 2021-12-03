@@ -1,15 +1,24 @@
 package applications;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import exceptions.TreeException;
+import utilities.BSTreeNode;
 
-public class Driver<E> {
+public class Driver {
 
-	public static void main(String[] args) throws FileNotFoundException, TreeException {
-
+	public static void main(String[] args) throws FileNotFoundException, TreeException, ClassNotFoundException {		
+		String input_file = "res/textfile.txt";
+		String output_file = "";
+		
 		if (args.length == 0)
 		{
 			System.out.println("Usage: java - jar Tracker.jar textfile.txt");			
@@ -21,7 +30,6 @@ public class Driver<E> {
 		}
 		else
 		{
-			String output = "";
 			int pf = 0;
 			int pl = 0;
 			int po = 0;
@@ -51,7 +59,7 @@ public class Driver<E> {
 				{
 					if (i == ordinalNumber + 1)
 					{
-						output += args[i];
+						output_file += args[i];
 					}	
 				}
 			}
@@ -60,8 +68,10 @@ public class Driver<E> {
 			{
 				System.out.println("Error. Only one option can be assigned.");
 			}
-			
+			else
+			{
+				new WordTracker(input_file);
+			}
 		}
-		new WordTracker();
 	}
 }

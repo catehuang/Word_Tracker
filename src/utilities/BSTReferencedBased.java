@@ -8,6 +8,9 @@ import java.util.Stack;
 import exceptions.TreeException;
 
 public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTreeADT<E>, Serializable {
+
+	private static final long serialVersionUID = -8949340044805294186L;
+	
 	private BSTreeNode<E> root;
 	int counter = 0;
 
@@ -18,7 +21,7 @@ public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTr
 	public BSTReferencedBased(E node) {
 		this.root = new BSTreeNode(node);
 	}
-
+	
 	@Override
 	public BSTreeNode<E> getRoot() throws TreeException {
 
@@ -169,6 +172,38 @@ public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTr
 			return false; // BST doesn't allow duplicates
 		}
 	}
+	
+	
+	private String getNodeValue(E entry) throws TreeException {
+		if (isEmpty()) {
+			throw new TreeException("The Binary Search Tree is empty");
+		}
+
+		if (getRoot().getNode() == entry) {
+			return this.root.getValue();
+		}
+
+		BSTreeNode<E> prev = null;
+		BSTreeNode<E> tmp = root;
+
+		while (tmp != null) {
+			if (entry.compareTo(tmp.getNode()) == 0) {
+				return tmp.getValue();
+			} else if (entry.compareTo(tmp.getNode()) > 0) {
+				prev = tmp;
+				tmp = tmp.getRight();
+			} else {
+				prev = tmp;
+				tmp = tmp.getLeft();
+			}
+		}
+
+		if (entry.compareTo(prev.getNode()) == 0) {
+			return prev.getValue();
+		} else {
+			return null;
+		}
+	}
 
 	@Override
 	public Iterator<E> inorderIterator() {
@@ -205,7 +240,7 @@ public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTr
 		public E next() {
 			return list.get(current++); // get the current element and move to the next
 		}
-
+		
 	}
 
 	@Override
@@ -281,5 +316,4 @@ public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTr
 		}
 
 	}
-
 }
