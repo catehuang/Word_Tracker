@@ -1,6 +1,7 @@
 package utilities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class BSTreeNode <E> implements Serializable
 {
@@ -9,7 +10,7 @@ public class BSTreeNode <E> implements Serializable
 	private BSTreeNode<E> left;
 	private BSTreeNode<E> right;
 	private E node;
-	private String value;
+	private ArrayList<String> value;
 
 	/**
 	 * Create node
@@ -19,14 +20,14 @@ public class BSTreeNode <E> implements Serializable
 		this.node = null;
 		this.left = null;
 		this.right = null;
-		this.value = "";
+		this.value = null;
 	}
 	
 	/**
 	 * Get the stored essential information - filenames and line numbers
 	 * @return value the value in string format
 	 */
-	public String getValue() {
+	public ArrayList<String> getValue() {
 		return value;
 	}
 
@@ -34,7 +35,7 @@ public class BSTreeNode <E> implements Serializable
 	 * Set a value in string format storing filenames and line numbers
 	 * @param value the value for a node
 	 */
-	public void setValue(String value) {
+	public void setValue(ArrayList<String> value) {
 		this.value = value;
 	}
 
@@ -47,7 +48,7 @@ public class BSTreeNode <E> implements Serializable
 		this.node = node;
 		this.left = null;
 		this.right = null;
-		this.value = "";
+		this.value = null;
 	}
 	
 	/**

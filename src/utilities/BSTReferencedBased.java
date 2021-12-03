@@ -174,7 +174,7 @@ public class BSTReferencedBased<E extends Comparable<? super E>> implements BSTr
 	}
 	
 	
-	private String getNodeValue(E entry) throws TreeException {
+	private ArrayList<String> getNodeValue(E entry) throws TreeException {
 		if (isEmpty()) {
 			throw new TreeException("The Binary Search Tree is empty");
 		}

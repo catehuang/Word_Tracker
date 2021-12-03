@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -29,7 +30,7 @@ public class WordTracker<E> {
 		}
 
 		wordTracker(input_file);
-		//serializeBSTreeToFile(binary_file); ERROR
+		//serializeBSTreeToFile(binary_file); 
 		
 		if (report_file != null && !report_file.equals("") )
 		{
@@ -41,27 +42,41 @@ public class WordTracker<E> {
 		for (Iterator<E> it = bst.inorderIterator(); it.hasNext();) {
 			String word = (String) it.next();
 			node = bst.search(word);
-			String value = node.getValue();
+			ArrayList<String> value = node.getValue();
 			
 			if (option.equals("pf")) {
 				System.out.println(word.toUpperCase());
 				System.out.println("-".repeat(20));
-				System.out.println(value.substring(0, value.indexOf(',')) + "\n");
+				for(int i = 0; i < value.size(); i++)
+				{
+					System.out.println(value.get(i).split(",")[0]); // filename
+				}
+				System.out.println();
 			}
 			else if (option.equals("pl"))
 			{
 				System.out.println(word.toUpperCase());
 				System.out.println("-".repeat(20));
-				System.out.println(value.substring(0, value.indexOf(',')));
-				System.out.println("- at lines [" + value.substring(value.indexOf(',') + 1) + "]\n");
+				for(int i = 0; i < value.size(); i++)
+				{
+					System.out.println(value.get(i).split(",")[0]); // filename
+					System.out.println("- at lines [" + value.get(i).substring(value.get(i).indexOf(',') + 1) + "]\n");
+				}
+				System.out.println();
 			}
 			else // option.equals("po")
 			{
-				int occurrence = value.substring(value.indexOf(',') + 1).split(",").length;
-				System.out.println(word.toUpperCase() + " (" + occurrence + " occurrences)");
+				int occurrence = 0;
+				System.out.println(word.toUpperCase());
 				System.out.println("-".repeat(20));
-				System.out.println(value.substring(0, value.indexOf(',')));
-				System.out.println("- at lines [" + value.substring(value.indexOf(',') + 1) + "]\n");
+				for(int i = 0; i < value.size(); i++)
+				{
+					occurrence += value.get(i).substring(value.get(i).indexOf(',') + 1).split(",").length;
+					System.out.println(value.get(i).split(",")[0]); // filename
+					System.out.println("- at lines [" + value.get(i).substring(value.get(i).indexOf(',') + 1) + "]");
+				}
+				System.out.println( " (" + occurrence + " occurrences)");
+				System.out.println();
 			}
 		}	
 	}
@@ -92,32 +107,37 @@ public class WordTracker<E> {
 					word = word.toLowerCase();
 					BSTreeNode<E> node;
 	
-					if (bst.isEmpty() || bst.search(word) == null)
+					if (bst.isEmpty() || bst.search(word) == null) //the tree is empty or this node doesn't exist
 					{
 						bst.add(word);
 						node = bst.search(word);
-						node.setValue(input_file + "," + line_number);
+						ArrayList<String> v = new ArrayList<String>();
+						v.add(input_file + "," + line_number);
+						node.setValue(v);
+						//node.setValue(input_file + "," + line_number);
 					}
-					else
+					else // this node exists
 					{
 						node = bst.search(word);
-						String value = node.getValue();
-						String[] value_array = value.split(",");
-						int max_length =  value_array.length;
-	
-						if (input_file.equals(value_array[0])) //same file
+						ArrayList<String> record = node.getValue(); // find it's value which is an arraylist format
+						boolean isUpdate = false;
+						
+						for (int i = 0; i < record.size(); i++)
 						{
-	
-							if (! value_array[max_length - 1].equals(Integer.toString(line_number))) // on the different line
+							if (input_file.equals(record.get(i).split(",")[0]))	// does the filename exist in arrayList? Yes
 							{
-								node.setValue(value + "," + line_number);
+								String[] s = record.get(i).split(",");
+								if (! s[s.length - 1].equals(Integer.toString(line_number))) // on the different line
+								{
+									record.set(i, record.get(i) + "," + line_number);	// add line_number at the end
+								}
+								isUpdate = true;
 							}
 						}
-						else //different file
-						{
-							node.setValue(input_file + "," + line_number);
-						}
 						
+						if (! isUpdate) { // the filename doesn't exist
+							node.getValue().add(input_file + "," + line_number);
+						}
 					}
 				}
 			}
@@ -128,12 +148,11 @@ public class WordTracker<E> {
 		for (Iterator<E> it = bst.inorderIterator(); it.hasNext();) {
 			String word = (String) it.next();
 			node = bst.search(word);
-			String value = node.getValue();
+			ArrayList<String> value = node.getValue();
 		    System.out.println(word + ", " + value);
 		}	
 		System.exit(0);
-		*/
-		
+		*/		
 	}
 	
 	/**
