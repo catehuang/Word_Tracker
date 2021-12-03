@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.Scanner;
 
@@ -29,6 +30,12 @@ public class WordTracker<E> {
 
 		wordTracker(input_file);
 		//serializeBSTreeToFile(binary_file); ERROR
+		
+		if (report_file != null && !report_file.equals("") )
+		{
+			PrintStream out = new PrintStream(new FileOutputStream(report_file));
+			System.setOut(out);
+		}
 		
 		BSTreeNode<E> node;
 		for (Iterator<E> it = bst.inorderIterator(); it.hasNext();) {
@@ -81,35 +88,37 @@ public class WordTracker<E> {
 			
 			for (String word : words)
 			{
-				word = word.toLowerCase();
-				BSTreeNode<E> node;
-
-				if (bst.isEmpty() || bst.search(word) == null)
-				{
-					bst.add(word);
-					node = bst.search(word);
-					node.setValue(input_file + "," + line_number);
-				}
-				else
-				{
-					node = bst.search(word);
-					String value = node.getValue();
-					String[] value_array = value.split(",");
-					int max_length =  value_array.length;
-
-					if (input_file.equals(value_array[0])) //same file
+				if (! word.equals("")) {
+					word = word.toLowerCase();
+					BSTreeNode<E> node;
+	
+					if (bst.isEmpty() || bst.search(word) == null)
 					{
-
-						if (! value_array[max_length - 1].equals(Integer.toString(line_number))) // on the different line
-						{
-							node.setValue(value + "," + line_number);
-						}
-					}
-					else //different file
-					{
+						bst.add(word);
+						node = bst.search(word);
 						node.setValue(input_file + "," + line_number);
 					}
-					
+					else
+					{
+						node = bst.search(word);
+						String value = node.getValue();
+						String[] value_array = value.split(",");
+						int max_length =  value_array.length;
+	
+						if (input_file.equals(value_array[0])) //same file
+						{
+	
+							if (! value_array[max_length - 1].equals(Integer.toString(line_number))) // on the different line
+							{
+								node.setValue(value + "," + line_number);
+							}
+						}
+						else //different file
+						{
+							node.setValue(input_file + "," + line_number);
+						}
+						
+					}
 				}
 			}
 		}
