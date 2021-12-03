@@ -33,6 +33,12 @@ public class WordTracker<E> {
 		}
 	}
 
+	/**
+	 * Build a bst using provided text file
+	 * @param input_file provided text file which is used to create a bst
+	 * @throws FileNotFoundException if provided text file doesn't exist
+	 * @throws TreeException if the tree is empty
+	 */
 	public void wordTracker(String input_file) throws FileNotFoundException, TreeException {
 
 		int line_number = 0;
@@ -132,6 +138,11 @@ public class WordTracker<E> {
 		*/
 	}
 	
+	/**
+	 * Store bst to a binary file
+	 * @param binary_file the destination to store a bst
+	 * @throws TreeException if the tree is empty
+	 */
 	public void serializeBSTreeToFile(String binary_file) throws TreeException
 	{
 		try 
@@ -155,18 +166,27 @@ public class WordTracker<E> {
 		}
 	}
 	
-	public void deserializeBSTreeFromFile(String binary_file) throws ClassNotFoundException
+	/**
+	 * Restore a bst from a binary file
+	 * @param binary_file the file stores a bst in binary format
+	 * @throws ClassNotFoundException if the class is not found
+	 */
+	public void deserializeBSTreeFromFile(String binary_file)
 	{
 		try 
 		{
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(binary_file));
 			
 			BSTreeNode node = null;
-			while ((ois.readObject()) != null)
-			{
-				node = (BSTreeNode) ois.readObject();
-				System.out.println(node.getNode() + ", " + node.getValue());
-				
+			try {
+				while ((ois.readObject()) != null)
+				{
+					node = (BSTreeNode) ois.readObject();
+					System.out.println(node.getNode() + ", " + node.getValue());
+					
+				}
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
 			}
 			ois.close();
 		} 
@@ -176,7 +196,8 @@ public class WordTracker<E> {
 		}
 		catch (IOException e) 
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
+			// the end of file
 		}
 	}
 	
