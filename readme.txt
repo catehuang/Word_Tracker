@@ -23,11 +23,3 @@ How does this program work?
 	3. Then the binary search tree will be store in res/repository.ser.
 	4. According to user specified output format, the program will generate result output to console (-pf/pl/po) or file (-f filename.txt)
 	
-Troubleshooting
-	1. Serialization has an issue. Program can store a binary search tree into repository.ser. However, when program restore a binary search tree from repository.ser and store a binary search tree, progrm will occur exceptions. 
-	
-Completeness
-	1. This program is not well-organized, some parts of design were added after we realized we needed some functions.
-	2. From criteria for marking guild, we didn't complete the serialization to make tree persisted. There is an issue for part of serialization.
-	3. About completeness, it is about 85%.
-
